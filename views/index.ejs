@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <link id="pagestyle" rel="stylesheet" href="/css/style.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/book.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/imgs/icon.png">
+    <title>TheSalonSuppliers</title>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <!-- offcanvas -->
+        <% if (message.length> 0) { %>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>
+                    <%= message %>
+                </strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <% } %>
+
+                <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+                    aria-labelledby="offcanvasWithBothOptionsLabel" style="background-color: aquamarine;">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Your Appointments</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ol>
+                            <% for(let i=0;i<validApps.length;i++){ %>
+                                <form onsubmit="return confirm('Do you really want to delete the appointment?');"
+                                    action="/delete" method="post">
+                                    <li>
+                                        <b>
+                                            <%=validApps[i].salon %>:
+                                        </b>
+                                        <%= validApps[i].date %>, <%=validApps[i].time %>
+                                    </li>
+                                    <input type="hidden" id="id" name="id" value="<%=validApps[i]._id %>">
+                                    <button class="app-delete btn btn-danger">
+                                        Cancel
+                                    </button>
+                                </form>
+                                <% } %>
+
+                        </ol>
+                    </div>
+                </div>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h5 class="modal-title w-100 font-weight-bold" id="exampleModalLabel">Login</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body pb-0">
+                                <form method="POST" action="/login" id="login-form" class="row gy-3">
+                                    <div class="col-12 px-4">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="inputEmail" class="form-label">Email</label>
+                                            <i class="fas fa-at py-1"></i>
+                                        </div>
+                                        <input type="email" name="email" autocomplete="off" class="form-control"
+                                            id="Email" required="true">
+                                    </div>
+                                    <div class="col-12 px-4 mb-2">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="inputPassword" class="form-label">Password</label>
+                                            <i class="fa fa-key py-1"></i>
+                                        </div>
+                                        <input type="password" name="password" required="true" id="password"
+                                            autocomplete="off" class="form-control" id="Password">
+
+                                        <div class="form-check">
+                                            <input class="form-check-input show-pass" type="checkbox" value=""
+                                                id="flexCheckDefault">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Show Password
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="submit" value="login" form="login-form"
+                                            class="btn btn-success px-4">Login</button>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h5 class="modal-title w-100 font-weight-bold" id="exampleModalLabel">Sign Up</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body pb-0">
+                                <form method="POST" action="/signin" id="signin-form" class="row gy-3">
+                                    <div class="col-12 px-4">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="inputName" class="form-label">Username</label>
+                                            <i class="fas fa-user py-1"></i>
+                                        </div>
+                                        <input type="text" name="username" required="true" autocomplete="off"
+                                            class="form-control" id="inputName">
+                                    </div>
+                                    <div class="col-12 px-4">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="inputEmail" class="form-label">Email</label>
+                                            <i class="fas fa-at py-1"></i>
+                                        </div>
+                                        <input type="email" name="email" required="true" autocomplete="off"
+                                            class="form-control" id="inputEmail">
+                                    </div>
+                                    <div class="col-12 px-4">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="inputPassword" class="form-label">Password</label>
+                                            <i class="fa fa-key py-1"></i>
+                                        </div>
+                                        <input type="password" name="password" required="true" class="form-control"
+                                            id="inputPassword">
+                                        <div id="messageBox">
+                                            <ol>
+                                                <b> Password must contain the following:</b> <br>
+                                                <li class="checker warn" id='lowercase'>A lowercase letter</li>
+                                                <li class="checker warn" id='uppercase'>A capital(uppercase) letter</li>
+                                                <li class="checker warn" id='numeric'>A number</li>
+                                                <li class="checker warn" id='length'>Minimum 8 characters</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 px-4 mb-2">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                        </div>
+                                        <input type="password" required="true" class="form-control"
+                                            id="confirmPassword">
+                                        <div id="confirmPassBox">
+                                            <span class="checker">Both passwords must match</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="button" value="signin"
+                                            class="register btn btn-success px-4">Register</button>
+                                    </div>
+
+
+
+                                    <div id="confirmPassBox">
+                                        <span class="checker">Both passwords must match</span>
+                                    </div>
+                                </form>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navbar -->
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">TheSalonSuppliers</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#about">About Us</a>
+                                </li>
+
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+
+                                <% if(!loggedIn){ %>
+                                    <li class="nav-item">
+                                        <a class="nav-link ml-2" data-bs-toggle="modal" data-bs-target="#registerModal"
+                                            href="#">Sign
+                                            Up</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="btn btn-success ml-2 my-1 py-1 px-3" data-bs-toggle="modal"
+                                            type="button" data-bs-target="#loginModal" href="#">Login</button>
+                                    </li>
+                                    <% }else{ %>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="offcanvas"
+                                                data-bs-target="#offcanvasWithBothOptions"
+                                                aria-controls="offcanvasWithBothOptions"
+                                                href="#offcanvasWithBothOptions">My
+                                                appointments</a>
+
+                                        </li>
+                                        <form action="/logout" method="post">
+                                            <button class="btn btn-danger ml-2 my-1 py-1 px-3"
+                                                type="submit">Logout</button>
+                                        </form>
+                                        <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Carousel -->
+                <div id="container" class="pb-4">
+                    <div id="carouselExampleControls" class="carousel slide w-100" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://source.unsplash.com/1920x1080/?hairstyle" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://source.unsplash.com/1920x1080/?handsome" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://source.unsplash.com/1920x1080/?salon" class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+                    <div id="carousel-about">
+                        <h2>Welcome to TheSalonSuppliers</h3>
+                            <p>TheSalonSuppliers is the one of the fastest growing salon and beauty parlour chain.</p>
+                            <p>Tired of waiting in long salon queues? With SalonSuppliers, you can check available timeslots
+                                for
+                                salons
+                                of your choice and book an appointment as per your comfort with just a few
+                                clicks. What are you waiting for? Book an appointment now!</p>
+                            <button type="button" class="btn btn-primary"
+                                onClick="document.getElementById('card-container').scrollIntoView();">Look at
+                                Salons 👀</button>
+                    </div>
+                </div>
+
+                <!-- Salons -->
+                <section id="salons" class="px-5 pt-1">
+
+                    <h2 id="book-head" class="font-weight-bold text-center">Book an Appointment</h2>
+                    <div id="card-container" class="container mt-4 p-4">
+                        <% let count=0; %>
+                            <% for(let i=0;i< Math.ceil(sls.length/4);i++){ %>
+                                <div class="row py-3">
+                                    <% for(let j=0;j<4 && count<sls.length;j++){ %>
+                                        <div class="col-md-3">
+                                            <div class="card-sl">
+                                                <div class="card-image">
+                                                    <img class="salon-img" src=<%=sls[count].image %> />
+                                                </div>
+
+                                                <div class="card-heading">
+                                                    <%=sls[count].name %>
+                                                </div>
+                                                <div class="card-text">
+                                                    <%=sls[count].address %>
+                                                </div>
+                                                <% if(!loggedIn){ %>
+                                                    <button class="card-button" data-bs-toggle="modal" type="button"
+                                                        data-bs-target="#loginModal">Book</button>
+                                                    <% }else{ %>
+                                                        <a id=<%=sls[count].name %> class="card-button
+                                                            appointment" href="#">Book</a>
+                                                        <% } %>
+                                            </div>
+                                        </div>
+                                        <% count++; %>
+                                            <% } %>
+
+                                </div>
+
+                                <% } %>
+                    </div>
+
+                </section>
+
+
+                <!-- Footer -->
+                <div id="about" class="footer-dark">
+                    <footer>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3 item">
+                                    <h3>Features</h3>
+                                    <ul>
+                                        <li><a href="#">Fast bookings</a></li>
+                                        <li><a href="#">Flexible schedules</a></li>
+                                        <li><a href="#">Unlimited usage</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6 col-md-3 item">
+                                    <h3>About</h3>
+                                    <ul>
+                                        <li><a href="/contributors">Team</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 item text">
+                                    <h3>TheSalonSuppliers</h3>
+                                    <p>Having trouble finding the right hair or beauty business in your area? Or perhaps
+                                        you're traveling and would like to find a specialist at your destination? Well,
+                                        with our help, you can do so with just a few clicks.
+                                    </p>
+                                </div>
+
+                            </div>
+                            <p class="copyright">TheSalonSuppliers © 2022</p>
+                        </div>
+                    </footer>
+                </div>
+
+    </div>
+
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
+
+
+    <script src="/js/app.js"></script>
+
+</body>
+
+</html>
