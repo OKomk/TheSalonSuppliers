@@ -39,7 +39,7 @@ const salon4 = new salons({
 })
 
 const salon5 = new salons({
-    name: "Cheems Salon",
+    name: "Chaetenya Salon",
     address: "Delhi NCR",
     image: "https://i.imgur.com/BpHvNg9.png"
 })
